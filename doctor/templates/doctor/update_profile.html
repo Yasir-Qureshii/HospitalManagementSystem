@@ -1,0 +1,10 @@
+{% extends 'doctor/base_doctor.html' %}
+{% load static %}
+{% block title %}Update Profile{% endblock %}
+
+{% block main %}
+ <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update</button>
+ </form>
+{% endblock %}

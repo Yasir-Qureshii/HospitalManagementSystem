@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<form>
+ <input type="button" class="btn btn-danger btn-sm ml-5" value="back" onclick="history.back()">
+</form>
+<div class="col-6 mx-auto">
+    <h3 class="text-muted my-1 ">Update Profile</h3>
+    <hr>
+ <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update</button>
+ </form>
+</div>
+{% endblock %}

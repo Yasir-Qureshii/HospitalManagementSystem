@@ -1,0 +1,71 @@
+{% url 'home' as home_url %}
+{% url 'patient:doctor_list' as doctor_list %}
+{% url 'doctor:appointments' as doctor_app_url %}
+{% url 'chat:message_view' as chat_url %}
+{% url 'patient:patient_account' as patient_url %}
+{% url 'patient:patient_appointments' as patient_app_url %}
+{% url 'patient:messages' as patient_msg_url %}
+{% url 'logout' as logout %}
+{% url 'login' as login %}
+{% url 'register' as register %}
+
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<!--  <a class="navbar-brand" href="#">BlogApp</a>-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse ml-5" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if request.path == home_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <!--  get session variable request.session['role']  -->
+      {% if request.session.role == 'doctor' %}
+      <li class="nav-item {% if request.path == doctor_app_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'doctor:appointments' slug='requests' doctor_pk=request.session.pk %}">Dashboard</a>
+      </li>
+      {% if request.session.messages %}
+      <li class="nav-item {% if request.path == chat_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'chat:message_view' patient_pk=request.session.default_patient_pk %}">
+          Messages<sup class=" text-warning">
+         {% if request.session.total_messages <= 0 %} {% else %} {{  request.session.total_messages }} {% endif %}
+        </sup></a>
+      </li>
+      {% endif %}
+      {% elif request.session.role == 'patient' %}
+      <li class="nav-item {% if request.path == doctor_list  %}active{% endif %}">
+        <a class="nav-link" href="{% url 'patient:doctor_list' %}">Doctors <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item {% if request.path == patient_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'patient:patient_account' pk=request.session.pk %}">Profile</a>
+      </li>
+      <li class="nav-item {% if request.path == patient_app_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'patient:patient_appointments' status='appointments' %}">Appointments</a>
+      </li>
+      {% if request.session.messages %}
+      <li class="nav-item {% if request.path == patient_msg_url %}active{% endif %}">
+        <a class="nav-link" href="{% url 'patient:messages' doctor_pk=request.session.default_doctor_pk %}">
+          Messages<sup class="text-warning">
+         {% if request.session.total_messages <= 0 %} {% else %} {{  request.session.total_messages }} {% endif %}
+        </sup></a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% if not user.is_authenticated %}
+      <li class="nav-item {% if request.path == register %}active{% endif %}">
+        <a class="nav-link" href="{% url 'register' %}">Register</a>
+      </li>
+       <li class="nav-item {% if request.path == login %}active{% endif %}">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+      {% else %}
+       <li class="nav-item {% if request.path == logout %}active{% endif %}">
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>	
+
+<!-- href="" & action="" contains the corrosponding paths in urlpatterns -->

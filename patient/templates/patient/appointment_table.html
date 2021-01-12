@@ -1,0 +1,50 @@
+<table class="table-bordered my-3 col-10 mx-auto" cellpadding="5">
+            <thead>
+              <tr class="text-center">
+                <td></td>
+                <td class="px-5">Doctor</td>
+                <td>Status</td>
+                <td>Date</td>
+                <td>Time</td>
+                <td>Location</td>
+                <td>Token No.</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+            {% if appointment.status == 'Approved' %}
+            <tr class="tr-close text-info text-center">
+              <td><img src="{{ appointment.doctor.image.url }}" width="70px"></td>
+              <td class="text-left"><u><a href="{% url 'doctor:doctor_preview' pk=appointment.doctor.pk %}">{{ appointment.doctor.full_name }}</a></u></td>
+              <td>{{ appointment.status }}</td>
+              <td>{{ appointment.appointment_date }}</td>
+              <td>{{ appointment.appointment_time }}</td>
+              <td>{{ appointment.location }}</td>
+              <td>{{ appointment.token_no }}</td>
+            </tr>
+            {% elif appointment.status == 'Disapproved' %}
+            <tr class="tr-close1">
+                <td><img src="{{ appointment.doctor.image.url }}" width="70px"></td>
+                <td class="text-left"><u><a href="{% url 'doctor:doctor_preview' pk=appointment.doctor.pk %}">{{ appointment.doctor.full_name }}</a></u></td>
+                <td class="text-danger">Disapproved</td>
+                <td colspan="4" class="text-justify text-muted p-3">
+                    <a style="opacity:0.7;" href="{% url 'patient:messages' doctor_pk=appointment.doctor.pk %}" class="btn btn-outline-success btn-sm">
+                        View Doctor's Message in Inbox
+                    </a>
+                </td>
+            </tr>
+            {% elif appointment.status == 'Pending' %}
+            <tr class="tr-close2">
+                <td><img src="{{ appointment.doctor.image.url }}" width="70px"></td>
+                <td class="text-left"><u><a href="{% url 'doctor:doctor_preview' pk=appointment.doctor.pk %}">{{ appointment.doctor.full_name }}</a></u></td>
+                <td class="text-danger">{{ appointment.status }}...</td>
+                <td colspan="4" class="text-justify text-muted p-3">
+                    <a style="opacity:0.7;" href="{% url 'patient:messages' doctor_pk=appointment.doctor.pk %}" class="btn btn-sm mt-1 btn-outline-danger">
+                        Send Requested Details
+                    </a>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+</table>

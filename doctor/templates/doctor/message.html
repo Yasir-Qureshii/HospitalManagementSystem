@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style type="text/css" src="{% static 'css/style.css' %}"></style>
+
+<aside id="aside" class="">
+	<div class="container mt-4">
+
+		{% for appointment in appointments %}
+		<a href="{% url 'chat:message_view' patient_pk=appointment.patient.pk %}">
+		<div class="card mb-3" style="width: 22rem;">
+     	 <div class="card-body">
+      	<div class="row">
+      		<div class="col-3">
+      			<img src="{{ appointment.patient.image.url }}" width="66px" style="border-radius: 50%;border: 2px solid silver;">
+      		</div>
+      		<div class="col-6 text-left mt-3">
+      			<span class="text-success h5">{{ appointment.patient.full_name }}<br>
+      		</div>
+      	</div>
+      </div>
+		</div>
+		</a>
+		{% endfor %}
+	</div>
+</aside>
+
+<div class="chatbox bg-white">
+	{% for message in messages %}
+	{% if message.from_doctor and message.msg_doctor %}
+	<div class="row mb-4">
+		<div class="col-6 doctor bg-secondary text-white ml-4">
+			<h5 class="text-warning">You</h5>
+			<p>{{ message.msg_doctor }}</p>
+			<div class="float-left time" style="font: 13px courier, sans-serif; color:orange">
+			<span>{{ message.created.time }}</span><br>
+			<span>{{ message.created.date }}</span>
+			</div>
+			<a href="{% url 'chat:delete_msg' msg_pk=message.pk %}" class="btn btn-warning float-right btn-sm" style="opacity:0.6;">Delete</a>
+		</div>
+		<div class="col-6">
+		</div>
+	</div>
+	{% endif %}
+
+	{% if message.msg_patient %}
+	<div class="row mb-4 mt-1">
+		<div class="col-6"></div>
+		<div class="col-6 patient bg-dark text-info">
+			<h5 class="text-muted">{{ patient_name }}</h5>
+			<p>{{ message.msg_patient }}</p>
+			<div class="float-left" style="font: 13px courier, sans-serif; color:orange">
+			<span>{{ message.created.time }}</span><br>
+			<span>{{ message.created.date }}</span>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	{% endfor %}
+
+	<!-- =================  End Chat Box================ -->
+</div>
+
+<div class="row mt-5 bg-white" style="position:fixed;bottom:15px;right:0%; width:70%;height:20%;">
+	<div class="col-10">
+		<form action="{% url 'chat:create_message' %}" method="POST">{% csrf_token %}
+		<textarea name="msg_doctor" class="form-control" rows="5" autofocus placeholder="Enter Your Message.." style="border: 2px solid #b3b3b3;"></textarea>
+	</div>
+	<div class="col-2">
+		<input type="hidden" name="patient_pk" value="{{ patient_pk }}">
+		<input type="submit" value="Send" class="btn mt-2 btn-lg btn-outline-info" style="margin-left: -20px;">
+		</form>
+	</div>
+</div>
+{% endblock %}
+

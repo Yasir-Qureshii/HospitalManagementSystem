@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<form>
+ <input type="button" class="btn btn-danger btn-sm ml-5" value="back" onclick="history.back()">
+</form>
+ <div class="container pt-4 px-4 my-3 pb-3" style="background-color:#f2f2f2;">
+  {% if not object.image or not object.blood_group %}
+ <div class="container text-center text-danger h5" id="paint" >Please Update Your Profile</div>
+ {% endif %}
+ <div class="row ml-4">
+      <img  style="border:1px solid pink;" src="{% if object.image %}{{ object.image.url }}{% endif %}" width="105px">
+ </div>
+ {% if request.session.role == 'patient' %}
+     <div class="row ml-4">
+      <a href="{% url 'patient:update' %}" class="mt-2 btn btn-outline-success btn-sm">Update Profile</a>
+     </div>
+ {% endif %}
+
+<div class="row m-4 pt-2" style="background-color:#e6e6e6;border-radius:13px;">
+<table class="col-6 table" cellpadding="10">
+    <thead>
+      <tr>
+        <td colspan="2"><b>Personal Details</b></td>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="text-muted"><b>Name</b></td>
+        <td>{{ object.full_name }}</td>
+    </tr>
+    <tr>
+        <td class="text-muted"><b>CNIC</b></td>
+        <td>{{ object.id_card }}</td>
+    </tr>
+     <tr>
+        <td class="text-muted"><b>Age</b></td>
+        <td>{{ object.age }}</td>
+    </tr>
+    {% if object.phone_number %}
+     <tr>
+        <td class="text-muted"><b>Phone No.</b></td>
+        <td>{{ object.phone_number }}</td>
+    </tr>
+    {% endif %}
+    {% if object.email %}
+     <tr>
+        <td class="text-muted"><b>Email</b></td>
+        <td>{{ object.email }}</td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
+<table class="col-6 table" cellpadding="10">
+    <thead>
+       <tr>
+         <td colspan="2"><b>Medical Details</b></td>
+       </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="text-muted"><b>Weight</b></td>
+            <td>{{ object.weight }}</td>
+        </tr>
+         <tr>
+            <td class="text-muted"><b>Blood Group</b></td>
+            <td>{{ object.blood_group }}</td>
+        </tr>
+         <tr>
+            <td class="text-muted"><b>Diseases</b></td>
+            <td>{{ object.diseases }}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

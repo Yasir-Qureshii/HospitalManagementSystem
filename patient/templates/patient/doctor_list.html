@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <table class="table-bordered my-3 col-10 mx-auto" cellpadding="2">
+            <thead>
+              <tr class="text-center">
+                <td></td>
+                <td class="px-5">Doctor</td>
+                <td>Category</td>
+                <td>Appoint</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% for doctor in doctor_list %}
+            <tr class="tr-close text-info text-center">
+              <td>
+                  {% if doctor.image %}
+                  <img src="{{ doctor.image.url }}" width="100px">
+                  {% endif %}
+              </td>
+              <td class="text-left pl-3">{{ doctor.full_name }}</td>
+              <td class="text-left pl-3">{{ doctor.category }}</td>
+              <td>
+                  <a class="btn btn-sm btn-primary" href="{% url 'doctor:doctor_preview' pk=doctor.pk %}">
+                      Profile
+                  </a>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+</table>
+</div>
+{% endblock %}
+

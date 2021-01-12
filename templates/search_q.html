@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+        {% if object_list %}
+        <h3 class="text-muted">Doctors for <span class="text-warning">{{ q }}</span></h3>
+        <div class="row mt-5">
+
+        {% for object in object_list %}
+            <div class="card mx-5 mb-5" style="width: 16rem;">
+              <img src="{{ object.image.url }}" class="card-img-top" alt="...">
+              <div class="card-body">
+                  <h5 class="card-title">{{ object.full_name }}</h5>
+                  <p class="mb-3 text-success h6">{{ object.category }}</p>
+                <p class="card-text text-justify">{{ object.about|truncatewords:12 }}</p>
+                <form method="GET" action="{% url 'doctor:view_profile' %}">
+                    <input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+                    <input type="hidden" name="doctor_pk" value="{{ object.pk }}">
+                    <input type="submit" value="View Profile" class="btn btn-lg btn-block btn-success">
+               </form>
+              </div>
+            </div>
+
+            {% endfor %}
+            </div>
+        {% else %}
+        <h3 class="text-muted mt-5">No Doctors for <span class="text-warning">{{ q }}</span></h3>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+<div class="card col-4 mb-4 mx-5 shadow-sm">
+              <div class="card-header">
+                  <img src="{{ object.image.url }}" width="50%">
+              </div>
+              <div class="card-body">
+                <h4 class="card-title pricing-card-title">{{ object.full_name }}</h4>
+                <h5 class="text-danger">{{ object.category }}</h5>
+                  <h5 class="text-muted text-justify">{{ object.about|truncatewords:15 }}</h5>
+
+               <form method="GET" action="{% url 'doctor:view_profile' %}">
+                    <input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+                    <input type="hidden" name="doctor_pk" value="{{ object.pk }}">
+                    <input type="submit" value="View Profile" class="btn btn-lg btn-block btn-primary">
+               </form>
+
+<!--                <a href="{{ object.get_absolute_url }}" type="button" class="btn btn-lg btn-block btn-primary">View Profile</a>-->
+              </div>
+            </div>

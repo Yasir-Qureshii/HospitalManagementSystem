@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<h1 class="text-center">Welcome to Hospital Management System</h1>
+
+		{% if not user.is_authenticated %}
+			<h3 class="text-center text-muted">Register as a Doctor or Patient </h3>
+		<div class="card py-3 col-5 mx-auto mt-5">
+		<div class="mx-auto col-6">
+			<a href="{% url 'register' %}" class="btn btn-success">Register Here</a>
+			<h5 class="my-3 ml-5">or</h5>
+		</div>
+			<div class="row">
+				<div class="col-6">
+				<p class="float-right text-secondary mt-2">Already Registered?</p>
+				</div>
+				<div class="col-6">
+					<a href="{% url 'login' %}" class="btn btn-outline-success float-left">Login</a>
+				</div>
+			</div>
+		</div>
+		</div>
+		{% else %}
+		<p class="col-6 mt-5 text-justify mx-auto">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<div class="col-6 mx-auto mt-5">
+			<hr>
+			<h3 class="ml-5 mb-4">Search Doctor</h3>
+			<div class="text-center">
+ 				<!-- pk={{ request.session.pk }}-->
+				<form class="form-inline mt-5 ml-5 mt-md-0" action="{% url 'search' %}">
+					<input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+     				  <input style="width:280px;" class="form-control mr-sm-2" autofocus type="text" placeholder="Enter Medical Category" aria-label="Search" name="q">
+					  <button class="btn btn-success text-center my-sm-0" type="submit">Search</button>
+					  <p class="text-muted mt-2">(e.g cardialogy, Heart, Vision)</p>
+    			</form>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+
+{% endblock %}

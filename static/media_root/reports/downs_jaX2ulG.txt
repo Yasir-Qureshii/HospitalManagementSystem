@@ -1,0 +1,20 @@
+|------------ PROJECT IDEAS -------------|
+Copy a no of texts and past each with their designated keyboard shortcuts
+
+make numericals solving app 
+
+ctrl + rightclick on a file to open with sublime
+
+a website which lists the research papers according to subjects
+
+close all open windoiws with 1 click
+
+|-------------------------------------------------------------|
+
+
+famous django CMS
+new django versions supports the older ones?
+
+
+
+on_delete=models.CASCADE will delete anything created by the admin if the admin user is deleted.

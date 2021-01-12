@@ -1,0 +1,78 @@
+body{
+	min-height: 0em !important;
+}
+.main-div{
+	width: 50%;
+	margin: auto;
+}
+.asides{
+  background-color: #e6e6e6;
+}
+
+.image-container {
+            position: relative;
+        }
+
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.image-container:hover .image {
+    opacity: 0.3;
+}
+
+.image-container:hover .middle {
+    opacity: 1;
+}
+#aside{
+	width: 30%;
+	height: 100%;
+	top: 9%;
+    position: fixed;
+    background-color: #e6e6e6;
+    overflow:scroll;
+    scroll-behavior: smooth;
+}
+.chatbox{
+    width: 69%;
+    height: 70%;
+    bottom: 30%;
+    top: 10%;
+    right: 0.3%;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding-right: 22px;
+}
+.doctor{
+    background-color: #333333;
+    font: white;
+    text-align: justify;
+    padding: 15px;
+    margin-left: 17px;
+    border-radius: 12px;
+}
+.patient{
+    background-color: #ff8080;
+    text-align: justify;
+    padding: 15px;
+    border-radius: 12px;
+    
+}

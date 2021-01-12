@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Medical Report - {{ patient.full_name }}</title>
+        <style type="text/css">
+            body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;  
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+            .row{
+                display: -webkit-flex !important;
+                display: flex !important;
+                flex-direction: row !important;
+                -webkit-flex-direction: row !important;
+
+            }
+            .col{
+                display: inline-block !important;
+            }
+            .muted{
+                color: #404040 !important;
+            }
+            .para{
+                text-align: justify;
+                margin: 65px auto;
+            }
+            table{
+                width: 90px !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <p class='title'>Appointment No: {{ appointment_no }}</p>
+            </div>
+            <div class="row">
+                    Name: <span class="muted">{{ patient.full_name }}</span><br/>
+                    CNIC: <span class="muted">{{ patient.id_card }}</span><br/>
+                    Phone No: <span class="muted">{{ patient.phone_number }}</span><br/>
+                    Appointment Date: <span class="muted">{{ appointment_date }}</span><br/>
+                    <hr class='hrItem' />
+            </div>
+            <div>
+                <p class="para">{{ msg }}</p>
+<br>
+            </div>
+            <div style="margin-top: 50px">
+                Doctor: <span class="muted">{{ doctor.full_name }}</span><br>
+                Category: <span class="muted">{{ doctor.category }}</span><br>
+                Address: <span class="muted">{{ doctor.address }}</span><br>
+                Dated: <span class="muted">{{ today }}</span><br>
+            </div>
+     </div>
+    </body>
+</html>

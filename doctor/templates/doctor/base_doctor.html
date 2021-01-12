@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% url 'doctor:update' as update %}
+{% url 'doctor:patient_list' as patient_list %}
+
+<div class="container-fluid" style="margin-top:-15px;">
+  <div class="row">
+    <nav class="col-md-3 d-none d-md-block bg-dark sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link {% if slug == 'requests' %}active{% else %} text-info{% endif %}" href="{% url 'doctor:appointments' slug='requests' doctor_pk=request.session.pk %}">
+              <span data-feather="home"></span>
+              Appointment Requests <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          {% if request.session.approved_appointments %}
+          <li class="nav-item">
+            <a class="nav-link {% if slug == 'fixed' %}active{% else %} text-info{% endif %}" href="{% url 'doctor:appointments' slug='fixed' doctor_pk=request.session.pk %}">
+              <span data-feather="file"></span>
+              Fixed Appointments
+            </a>
+          </li>
+          {% endif %}
+          {% if request.session.done_appointments %}
+          <li class="nav-item">
+            <a class="nav-link {% if slug == 'done' %}active{% else %} text-info{% endif %}" href="{% url 'doctor:appointments' slug='done' doctor_pk=request.session.pk %}">
+              <span data-feather="shopping-cart"></span>
+              Done Appointments
+            </a>
+          </li>
+          {% endif %}
+          {% if request.session.pending_appointments %}
+          <li class="nav-item">
+            <a class="nav-link {% if slug == 'pending' %}active{% else %} text-info{% endif %}" href="{% url 'doctor:appointments' slug='pending' doctor_pk=request.session.pk %}">
+              <span data-feather="shopping-cart"></span>
+              Pending Appointments
+            </a>
+          </li>
+          {% endif %}
+          {% if request.session.disapproved_appointments %}
+           <li class="nav-item">
+            <a class="nav-link {% if slug == 'disapproved' %}active{% else %} text-info{% endif %}" href="{% url 'doctor:appointments' slug='disapproved' doctor_pk=request.session.pk %}">
+              <span data-feather="shopping-cart"></span>
+              Disapproved Appointments
+            </a>
+          </li>
+          {% endif %}
+          {% if request.session.done_appointments %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == patient_list %}active{% else %} text-info{% endif %}" href="{% url 'doctor:patient_list' %}">
+              <span data-feather="users"></span>
+              Patients
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == update %}active{% else %} text-info{% endif %}" href="{% url 'doctor:update' %}">
+              <span data-feather="layers"></span>
+              Update Profile
+            </a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link text-info" href="{% url 'doctor:doctor_preview' pk=request.session.pk %}">
+              <span data-feather="layers"></span>
+              Preview Profile
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-7 ml-sm-auto col-lg-9">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 border-bottom">
+        <div class="text-muted h4 col-12 text-center">{% block title %}{% endblock %}</div>
+      </div>
+
+        <div class="container mt-5 ml-2">{% block main %}{% endblock %}</div>
+
+      <canvas class="my-4 w-100" id="myChart" width="900" height="60"></canvas>
+
+    </main>
+  </div>
+</div>
+{% endblock %}

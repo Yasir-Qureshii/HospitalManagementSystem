@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	  <h2 class="text-center">Register Yourself</h2>
+		<div class="col-3 mt-1 mx-auto">
+			<p class="mt-3 text-muted">( This is a Dummy Website So You Can Use Fake Email Addresses )</p>
+	    <form method="POST" action="/register/" class="mt-5">{% csrf_token %}
+	    	<input type="hidden" name="user_type" value="{{ user_type }}">
+		    {{ form.as_p }}
+	    	<button type="submit" class="btn btn-success btn-block">Submit</button>
+     	</form>
+		</div>
+{% endblock %}
+

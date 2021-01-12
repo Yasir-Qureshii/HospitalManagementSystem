@@ -1,0 +1,96 @@
+{% extends 'doctor/base_doctor.html' %}
+
+{% block title %}
+{% if slug == 'requests' %}
+Appointment Requests
+{% else %}
+{{ slug|capfirst }} Appointments
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if slug == 'requests' %}
+ <div class="row mx-1">
+     {% if appointment_list %}
+     {% for appointment in appointment_list %}
+        <div class="box-shadow mx-2 border border-info col-5 no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-3 d-flex flex-column position-statFic">
+          <table class="table-bordered" cellpadding="5">
+            <thead>
+              <tr class="text-center">
+                <td>Token No.</td>
+                <td>Name</td>
+                <td>Date</td>
+              </tr>
+            </thead>
+            <tbody>
+            <tr class="text-primary text-center">
+              <td>{{ appointment.token_no }}</td>
+              <td>{{ appointment.patient.full_name }}</td>
+              <td>{{ appointment.created.date }}</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="text-center">Description</td>
+            </tr>
+            <tr>
+              <td class="text-primary text-justify" colspan="4">{{ appointment.msg_patient|truncatewords:26 }}</td>
+            </tr>
+
+            </tbody>
+          </table>
+          <div class="row mt-2">
+              <div class="col">
+            <a href="{% url 'patient:patient_account' pk=appointment.patient.pk %}" class="btn btn-outline-info btn-sm float-right">View Profile</a>
+              </div>
+              <div class="col">
+            <form action="{% url 'doctor:respond' ap_pk=appointment.pk %}">
+                <input type="hidden" name="status" value="respond">
+                <input type="submit" value="Respond" class="btn btn-success btn-sm float-left">
+            </form>
+              </div>
+          </div>
+        </div>
+      </div>
+     {% endfor %}
+     {% else %}
+     <h4 class="mt-3 font-italic ml-3 text-danger">No Appointments Yet!!</h4>
+     {% endif %}
+</div>
+{% elif slug == 'fixed' %}
+{% include 'doctor/appointment_table.html' with appointments=approved_appointments %}
+{% elif slug == 'pending' %}
+{% include 'doctor/appointment_table.html' with appointments=pending_appointments %}
+{% elif slug == 'done' %}
+{% include 'doctor/appointment_table.html' with appointments=done_appointments %}
+{% elif slug == 'disapproved' %}
+{% if disapproved_appointments %}
+<table class="table-bordered my-3 col-10" cellpadding="10">
+            <thead>
+              <tr class="text-center">
+                <td colspan="2">Name</td>
+                <td>Token No</td>
+                <td>Message</td>
+                <td>Profile</td>
+                <td></td>
+              </tr>
+              {% for appointment in disapproved_appointments %}
+              <tr class="text-muted">
+                <td><img src="{{ appointment.patient.image.url }}" width="80px"></td>
+                <td>{{ appointment.patient.full_name }}</td>
+                <td>{{ appointment.token_no }}</td>
+                <td><a href="{% url 'chat:message_view' patient_pk=appointment.patient.pk %}" class="btn btn-sm btn-outline-success">View Message Sent</a></td>
+                <td><a href="{% url 'patient:patient_account' pk=appointment.patient.pk %}" class="btn btn-sm btn-outline-success">View Profile</a></td>
+                <td><a href="{% url 'doctor:delete_appointment' ap_pk=appointment.pk %}" class="btn btn-sm btn-dark">Delete</a></td>
+              </tr>
+            {% endfor %}
+              </thead>
+</table>
+
+{% else %}
+<h4 class="mt-3 font-italic ml-3 text-danger">No Disapproved Appointments!</h4>
+{% endif %}
+
+
+{% endif %}
+{% endblock %}

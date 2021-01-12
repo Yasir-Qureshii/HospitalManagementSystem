@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+         {% if messages %}
+          <div class="alert col-6 mx-auto alert-success alert-dismissible messages">
+              {% for message in messages %}
+              <span class="{% if message.tags %} {{ message.tags }} {% endif %}">
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                  {{ message }}<br/>
+              </span>
+              {% endfor %}
+          </div>
+          {% endif %}
+
+<div class="container">
+    <div class="col-5 mx-auto mt-5 login">
+        <h3 class="text-center mb-5">Please Login</h3>
+	    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Login</button>
+        </form>
+
+        <br class="mt-5">
+        <div class="text-muted mt-5 text-center">
+            <h5>Don't Have an Account?</h5>
+            <a href="#" class="btn btn-sm btn-primary btn-accounts" style="opacity:0.7">Login Built-in Accounts</a>
+        </div>
+</div>
+
+    <div class="invisible mt-5 accounts">
+    <a href="#" class="btn btn-sm btn-success btn-login mt-3">Back To Login</a>
+        <hr>
+
+    <div class="row text-muted mt-5">
+
+       <table class="table-bordered col-4 ml-auto">
+            <thead>
+              <tr>
+                  <td colspan="2" class="text-center text-danger">Doctors</td>
+              </tr>
+            </thead>
+            <tbody>
+            <tr class="text-center">
+                <td>Email</td>
+                <td>Password</td>
+              </tr>
+            {% for doctor in doctor_list %}
+            <tr class="tr-close text-info text-center">
+              <td class="text-left pl-3">{{ doctor.doctor_user }}</td>
+              <td>a</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+       <table class="table-bordered col-4 mr-auto">
+            <thead>
+              <tr>
+                  <td colspan="2" class="text-center">Patients</td>
+              </tr>
+            </thead>
+            <tbody>
+            <tr class="text-center">
+                <td>Email</td>
+                <td>Password</td>
+              </tr>
+            {% for patient in patient_list %}
+            <tr class="tr-close text-info text-center">
+              <td class="text-left pl-3">{{ patient.patient_user }}</td>
+              <td>a</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+   </div>
+    </div>
+</div>
+
+{% endblock %}

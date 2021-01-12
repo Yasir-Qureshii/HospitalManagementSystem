@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<form>
+ <input type="button" class="btn btn-danger btn-sm ml-5" value="back" onclick="history.back()">
+</form>
+<div class="container mt-2">
+    <div>
+        <img src="{% if object.image %}{{ object.image.url }}{% endif %}" width="15%">
+    </div>
+
+    <h4 class="mt-2 text-success">{{ object.full_name }} | <span class="h5 text-info">{{ object.category }}</span></h4>
+    <p class="text-justify text-muted font-italic mb-3">Address: <span class="text-danger">{{ object.address }}</span></p>
+    <div class="row">
+        <div class="col-7 mr-5 pb-4">
+        <h4 class="mb-2">About</h4>
+        <p class="text-justify text-muted">{{ object.about }}</p>
+            {% if request.session.role == 'patient' %}
+            <hr>
+             <h4 class="my-3">Request Appointment</h4>
+            {% if appointment_status == 'Done' or appointment_status == 'Disapproved' or not appointment_status %}
+            <div class="col-8">
+                <form method="POST" action="{% url 'doctor:create_appointment' %}">{% csrf_token %}
+                    <input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+                    <input type="hidden" name="doctor_pk" value="{{ object.pk }}">
+                    <textarea name="msg_patient" id="" cols="20" rows="10" class="form-control" placeholder="Describe Your Issues...."></textarea>
+                    <input type="submit" value="Appoint" class="btn btn-success mt-3 mb-5">
+                </form>
+            </div>
+            {% elif appointment_status == 'New' %}
+            <h6 class="text-success mt-3 mb-2">Appointment Request Sent...</h6>
+            <h6 class="text-success">Please Wait for Approval</h6>
+            {% elif appointment_status == 'Approved' %}
+            <h6 class="text-success mt-3 mb-2">Appointment Exists</h6>
+            <a href="{% url 'patient:patient_appointments' status='appointments' %}" class="btn btn-secondary btn-sm">See The Appointments Page</a>
+            {% elif appointment_status == 'Pending' %}
+            <h6 class="text-success mt-3 mb-2">Appointment is Pending...</h6>
+            <a class="btn btn-secondary btn-sm mt-2" href="{% url 'patient:messages' doctor_pk=object.pk %}">
+                Please Send The Requested Details
+            </a>
+            {% endif %}
+        {% endif %}
+        </div>
+            <aside class="col-4 ml-2 blog-sidebar">
+        <div class="p-4 mb-3 asides rounded">
+           <h4 class="font-italic">Awards</h4>
+            <ol class="list-unstyled mt-2">
+                {% for award in object.awards.all %}
+                <li><a href="">{{ award }}</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+       </aside>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- for accessing ManyToManyField objects use object.ManyToManyField.all -->

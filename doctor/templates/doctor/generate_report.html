@@ -1,0 +1,16 @@
+{% extends 'doctor/base_doctor.html' %}
+{% load static %}
+{% block title %}Generate Report for <span class="text-info">{{ patient }}</span>{% endblock %}
+
+{% block main %}
+{% if not appointment.report_generated %}
+<div class="col-9 mx-auto">
+     <form method="POST" action="{% url 'doctor:GeneratePDF' ap_pk=ap_pk %}">{% csrf_token %}
+            <textarea name="msg"  cols="30" rows="8" class="form-control" autofocus placeholder="Enter All the results and Details"></textarea>
+            <input type="submit" value="Generate Report" class="btn btn-success mt-2">
+    </form>
+</div>
+{% else %}
+<h2>Report Generated</h2>
+{% endif %}
+{% endblock %}

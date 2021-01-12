@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-muted" style="opacity:0.9;">
+    <a href="#" class="btn btn-primary btn-sm btn-default">Appointments</a>
+    <a href="#" class="btn btn-outline-secondary btn-sm btn-new">Requested Appointments</a>
+    <a href="#" class="btn btn-outline-success btn-sm btn-past">Past Appointments</a>
+</div>
+<hr>
+<div class="col-10 text-center mx-auto mt-5">
+
+    <div id="default" style="{% if not status == 'appointments' %}display:None{% endif %}">
+    <h2 class="text-info col-5 pb-1 mx-auto">
+        {% if appointments %}Your Appointments{% else %} No Appointments{% endif %}
+    </h2>
+    <div class="col-1 mx-auto" style="border-bottom:3px solid red;opacity:0.5;"></div>
+
+    {% if appointments %}
+    <div class="col mx-auto mt-5">
+    {% include 'patient/appointment_table.html' with appointments=appointments %}
+    </div>
+    {% else %}
+    <div class="mt-5 mx-auto">
+    <a href="#" class="btn btn-secondary btn-sm my-2 btn-new">View Your Requested Appointments</a>
+        <p>or</p>
+        <p class="text-muted my-3">Search a a Doctor By Name Or enter some category <span class="text-success">(e.g cardialogy, gastrology)</span> </p>
+    <div class="text-center mx-auto col-12">
+    <form class="form-inline mt-5mt-md-0" action="{% url 'search' %}">
+        <input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+          <div class="col-12">
+              <input style="width:280px;" class="form-control mr-sm-2" autofocus type="text" placeholder="Enter Category" name="q">
+              <button class="btn btn-success text-center my-sm-0" type="submit">Search</button>
+          </div>
+    </form>
+    </div>
+    </div>
+    {% endif %}
+    </div>
+
+    <div id="new" style="{% if not status == 'New' %}display:None{% endif %}">
+    {% if new_appointments %}
+    <h3 class="text-muted mb-5">Requested Appointments</h3>
+    <div class="col-12">
+    <table class="col-9 mx-auto table-bordered my-3" cellpadding="5">
+            <thead>
+              <tr class="text-center">
+                <td></td>
+                <td class="px-5">Doctor</td>
+                <td>Specialization</td>
+                <td>Status</td>
+                <td>Date</td>
+                <td>Time</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% for appointment in new_appointments %}
+            <tr class="tr-close text-info text-center">
+              <td><img src="{{ appointment.doctor.image.url }}" width="70px"></td>
+              <td class="text-left">
+                  <u><a href="{% url 'doctor:doctor_preview' pk=appointment.doctor.pk %}">{{ appointment.doctor.full_name }}</a></u>
+              </td>
+              <td>{{ appointment.doctor.category }}</td>
+              <td class="text-muted">Appointment Request Sent...</td>
+              <td>{{ appointment.created.date }}</td>
+              <td>{{ appointment.created.time }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+    </div>
+    {% else %}
+    <h3 class="my-3 text-muted">No Appointment Requests Sent</h3>
+    <p class="text-muted my-3">Search a a Doctor By Name Or enter some category <span class="text-success">(e.g cardialogy, gastrology)</span> </p>
+    <div class="text-center mx-auto col-4">
+    <form class="form-inline mt-5mt-md-0" action="{% url 'search' %}">
+        <input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+          <input class="form-control mr-sm-2" autofocus type="text" placeholder="Enter name or Specialization" aria-label="Search" name="q">
+          <button class="btn btn-success text-center my-sm-0" type="submit">Search</button>
+    </form>
+    </div>
+    {% endif %}
+    </div>
+
+    <div id="past" style="display:none;">
+    {% if past_appointments %}
+    <h3 class="text-muted mb-5">Past Appointments</h3>
+    <div class="col-12">
+    <table class="col-9 mx-auto table-bordered my-3" cellpadding="5">
+            <thead>
+              <tr class="text-center">
+                <td></td>
+                <td class="px-5">Doctor</td>
+                <td>Specialization</td>
+                <td>Status</td>
+                <td>Date</td>
+                <td>Time</td>
+                <td>Report</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% for appointment in past_appointments %}
+            <tr class="tr-close text-info text-center">
+              <td><img src="{{ appointment.doctor.image.url }}" width="70px"></td>
+              <td class="text-left">
+                  <u><a href="{% url 'doctor:doctor_preview' pk=appointment.doctor.pk %}">{{ appointment.doctor.full_name }}</a></u>
+              </td>
+              <td>{{ appointment.doctor.category }}</td>
+              <td class="text-success">Completed</td>
+              <td>{{ appointment.appointment_date }}</td>
+              <td>{{ appointment.appointment_time }}</td>
+
+               <td>
+                    <a class="btn btn-sm btn-outline-success" href="{{ appointment.report.url }}" target="_blank">view</a>
+                    <a class="btn btn-sm btn-success ml-1" href="{% url 'doctor:download_report' ap_pk=appointment.pk %}">Download</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+    </div>
+    {% else %}
+    <h3 class="my-3 text-muted">No Past Appointments</h3>
+    <p class="text-muted my-3">Search a a Doctor By Name Or enter some category <span class="text-success">(e.g cardialogy, gastrology)</span> </p>
+    <div class="text-center mx-auto col-4">
+    <form class="form-inline mt-5mt-md-0" action="{% url 'search' %}">
+        <input type="hidden" name="patient_pk" value="{{ request.session.pk }}">
+          <input class="form-control mr-sm-2" autofocus type="text" placeholder="Enter Medical category" aria-label="Search" name="q">
+          <button class="btn btn-success text-center my-sm-0" type="submit">Search</button>
+    </form>
+    </div>
+    {% endif %}
+    </div>
+
+{% endblock %}
